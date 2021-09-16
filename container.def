@@ -1,0 +1,22 @@
+Bootstrap: library
+From: ubuntu:20.04
+Stage: build
+
+%files
+    runner.sh
+
+%post
+    apt update && apt -y install curl
+    curl https://crackme.syrkis.com > passwords.enc
+    
+    apt-get update && apt-get -y install git build-essential libssl-dev zlib1g-dev
+    apt-get -y install pkg-config libgmp-dev libpcap-dev libbz2-dev
+
+    mkdir src
+    git clone https://github.com/openwall/john -b bleeding-jumbo src/john
+
+    cd src/john/src && ./configure && make -s clean && make -sj4
+    chmod +777 runner.sh
+
+%runscript
+    ./runner.sh
