@@ -3,7 +3,6 @@ From: ubuntu:20.04
 Stage: build
 
 %files
-    runner.sh
 
 %post
     apt update && apt -y install curl
@@ -16,7 +15,9 @@ Stage: build
     git clone https://github.com/openwall/john -b bleeding-jumbo src/john
 
     cd src/john/src && ./configure && make -s clean && make -sj4
-    chmod +777 runner.sh
 
 %runscript
+    pwd
+    curl https://raw.githubusercontent.com/syrkis/cracker/master/runner.sh > runner.sh
+    chmod +777 runner.sh
     ./runner.sh
